@@ -1,55 +1,26 @@
-import reqRespApi from "../api/reqRes";
-import { useEffect, useRef, useState } from "react";
+import { useUsuarios } from './hooks/useUsuarios';
 
 export const Usuarios = () => {
-  const [usuarios, setUsuarios] = useState([]); // El estado va dentro del componente
+  const { usuarios, fnCargaUsuarios } = useUsuarios();
 
-  const RefPage = useRef(0);
-
-  useEffect(() => {
-    fnCargaUsuarios();
-  }, []);
-
-  const fnCargaUsuarios = async () => {
-    const response = await reqRespApi
-      .get('/users', {
-        params: {
-          page: RefPage.current,
-        },
-      })
-      .then((resp) => {
-        if (resp.data.data.length > 0) {
-          setUsuarios(resp.data.data); // Guardamos la lista de usuarios en el estado
-          RefPage.current++;
-        }else{
-            alert('No hay más registros')
-        }
-      })
-      .catch((err) => console.log(err));
-  };
-
-  const renderItem = (usuario) => {
-    return (
-      <tr key={usuario.id}>
-        <td>
-          <img
-            src={usuario.avatar}
-            alt={usuario.first_name}
-            style={{ width: 50, borderRadius: 100 }}
-          />
-        </td>
-        <td>
-          {usuario.first_name} {usuario.last_name}
-        </td>
-        <td>{usuario.email}</td>
-      </tr>
-    );
-  };
+  const renderItem = (usuario) => (
+    <tr key={usuario.id}>
+      <td>
+        <img
+          src={usuario.avatar}
+          alt={usuario.first_name}
+          style={{ width: 50, borderRadius: 100 }}
+        />
+      </td>
+      <td>{usuario.first_name} {usuario.last_name}</td>
+      <td>{usuario.email}</td>
+    </tr>
+  );
 
   return (
-    <>
+    <div style={{ padding: 20 }}>
       <h3>Usuarios</h3>
-      <table className="table">
+      <table className="table" border="1" cellPadding="10" style={{ width: '100%', textAlign: 'center' }}>
         <thead>
           <tr>
             <th>Avatar</th>
@@ -58,11 +29,16 @@ export const Usuarios = () => {
           </tr>
         </thead>
         <tbody>
-          {usuarios.map((usuario) => renderItem(usuario))}{" "}
-          {/* Renderizamos la lista de usuarios */}
+          {usuarios.length > 0 ? (
+            usuarios.map((usuario) => renderItem(usuario))
+          ) : (
+            <tr>
+              <td colSpan="3">Cargando usuarios...</td>
+            </tr>
+          )}
         </tbody>
       </table>
-      <button onClick={fnCargaUsuarios}>Siguiente</button>
-    </>
+      <button onClick={fnCargaUsuarios} style={{ marginTop: 10 }}>Siguiente</button>
+    </div>
   );
 };

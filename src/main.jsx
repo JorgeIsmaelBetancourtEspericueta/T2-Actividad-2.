@@ -14,7 +14,8 @@ import { createRoot } from "react-dom/client";
 //import { Contador } from "./components/Contador";
 //import { ContadorHook } from "./components/ContadorHook";
 //import { Login } from "./components/Login";
-import { Usuarios } from "./components/Usuarios";
+// import { Usuarios } from "./components/Usuarios";
+import { Formularios } from "./components/Formularios";
 import "./index.css";
 
 createRoot(document.getElementById("root")).render(
@@ -33,6 +34,7 @@ createRoot(document.getElementById("root")).render(
     {/* <Contador/> */}
     {/* {<ContadorHook/>} */}
     {/* {<Login/>} */}
-    {<Usuarios/>}
+    {/* {<Usuarios/>} */}
+    <Formularios/>
   </StrictMode>
 );
